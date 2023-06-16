@@ -27,9 +27,14 @@ async function deleteTask(taskId) {
 }
 
 async function updateTask(id, task) {
-  const updateQuery = "UPDATE tasks SET status = ? WHERE id = ?";
-  const { status } = task;
-  const [updatedTask] = await connection.execute(updateQuery, [status, id]);
+  const updateQuery = "UPDATE tasks SET title = ?, status = ? WHERE id = ?";
+  const { title, status } = task;
+  const [updatedTask] = await connection.execute(updateQuery, [
+    title,
+    status,
+    id,
+    ,
+  ]);
 
   return updatedTask;
 }

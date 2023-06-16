@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/task/";
+const url = "http://localhost:3000/task";
 const tbody = document.querySelector("tbody");
 const addForm = document.querySelector(".add-form");
 const inputTasks = document.querySelector(".input-task");
@@ -26,7 +26,7 @@ async function addTask(event) {
 }
 
 async function deleteTask(id) {
-  await fetch(`${url}${id}`, {
+  await fetch(`${url}/${id}`, {
     method: "DELETE",
   });
 
@@ -34,7 +34,7 @@ async function deleteTask(id) {
 }
 
 async function updateTask({ id, title, status }) {
-  await fetch(`${url}${id}`, {
+  await fetch(`${url}/${id}`, {
     method: "PUT",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ title, status }),
@@ -100,12 +100,21 @@ function createRow(task) {
   const editForm = createElement("form");
   const editInput = createElement("input");
 
+  editInput.value = title;
   editForm.appendChild(editInput);
 
+  editForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    updateTask({ id, title: editInput.value, status });
+  });
+
+  editButton.addEventListener("click", () => {
+    tdTitle.innerText = "";
+    tdTitle.appendChild(editForm);
+  });
+  deleteButton.addEventListener("click", () => deleteTask(id));
   editButton.classList.add("btn-action");
   deleteButton.classList.add("btn-action");
-
-  deleteButton.addEventListener("click", () => deleteTask(id));
 
   tdStatus.appendChild(select);
 
